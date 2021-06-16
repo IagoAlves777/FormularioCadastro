@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import FormularioCadastro from './components/FormularioCadastro/FormularioCadastro';
 import './App.css';
-import{Container} from "@material-ui/core"
+import 'fontsource-roboto'
+import{Container, Typography} from "@material-ui/core"
 
 class App extends Component {
   render(){
     return (
       <Container component="article" maxWidth="sm">
-        <h1>Formulario Cadastro</h1>
+        <Typography variant="h3" component="h1" align="center">Formulario Cadastro</Typography>
         <FormularioCadastro/>
         </Container>
     );
