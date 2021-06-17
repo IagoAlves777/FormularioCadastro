@@ -1,21 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextField, Button, Switch, FormControlLabel } from '@material-ui/core';
-function FormularioCadastro() {
+function FormularioCadastro({ enviar, validarCPF }) {
+  const [nome, setNome] = useState("");
+  const [sobrenome, setSobrenome] = useState("");
+  const [cpf, setCpf] = useState("");
+  const [promocoes, setPromocoes] = useState(true);
+  const [novidades, setNovidades] = useState(true);
+  const [error, setError] = useState({ cpf: { valido: true, texto: "" } });
+
   return (
-    <form>
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        enviar({ nome, sobrenome, cpf, promocoes, novidades })
+        setNome("")
+        setSobrenome("")
+        setCpf("")
+      }}
+    >
       <TextField
+        value={nome}
+        onChange={(event) => {
+          setNome(event.target.value);
+        }}
         variant="outlined"
         id="nome" label="Nome"
         margin="normal"
         fullWidth />
 
       <TextField
+        value={sobrenome}
+        onChange={(event) => {
+          setSobrenome(event.target.value);
+        }}
         variant="outlined"
         id="sobrenome"
         margin="normal"
         label="Sobrenome" fullWidth />
 
       <TextField
+        value={cpf}
+        onChange={(event) => {
+          setCpf(event.target.value);
+        }}
+        onBlur={(event) => {
+          setError({ cpf: validarCPF(cpf) })
+        }}
+        error={!error.cpf.valido}
+        helperText={error.cpf.texto}
         variant="outlined"
         id="cpf"
         margin="normal"
@@ -24,8 +56,11 @@ function FormularioCadastro() {
       <FormControlLabel
         control={
           <Switch
+            checked={promocoes}
+            onChange={(event) => {
+              setPromocoes(event.target.checked)
+            }}
             name="promocoes"
-            defaultChecked
             color="primary" />
         }
         label="Promoções"
@@ -34,8 +69,11 @@ function FormularioCadastro() {
       <FormControlLabel
         control={
           <Switch
+            checked={novidades}
+            onChange={(event) => {
+              setNovidades(event.target.checked)
+            }}
             name="novidades"
-            defaultChecked
             color="primary" />
         }
         label="Novidades"
