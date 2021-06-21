@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TextField, Button, Switch, FormControlLabel } from '@material-ui/core';
-function DadosPessoais({ enviar, validarCPF }) {
+function DadosPessoais({ enviar, validacoes }) {
   const [nome, setNome] = useState("");
   const [sobrenome, setSobrenome] = useState("");
   const [cpf, setCpf] = useState("");
@@ -8,6 +8,13 @@ function DadosPessoais({ enviar, validarCPF }) {
   const [novidades, setNovidades] = useState(true);
   const [error, setError] = useState({ cpf: { valido: true, texto: "" } });
 
+
+  function validarCampos(event){
+    const {name, value} = event.target;
+    const novoEstado = {...error};
+    novoEstado[name] = validacoes[name](value);;
+    setError(novoEstado);
+  }
   return (
     <form
       onSubmit={(event) => {
@@ -43,9 +50,8 @@ function DadosPessoais({ enviar, validarCPF }) {
         onChange={(event) => {
           setCpf(event.target.value);
         }}
-        onBlur={(event) => {
-          setError({ cpf: validarCPF(cpf) })
-        }}
+        onBlur={validarCampos}
+        name="cpf"
         error={!error.cpf.valido}
         helperText={error.cpf.texto}
         variant="outlined"
